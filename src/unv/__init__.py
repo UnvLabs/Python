@@ -1,4 +1,5 @@
 import re
+from code import InteractiveConsole
 
 COMMENTS = r"###[\s\S]*?###|#.*"
 STRINGS = r""""(?:\\["\\]|[^"\\])*"|'(?:\\['\\]|[^'\\])*'"""
@@ -6,7 +7,6 @@ STATEMENT = re.compile(
     r"^\s*(if|else|switch|try|catch|class|do|while|for)\s+.+", re.MULTILINE
 )
 FUNCTION = re.compile(r"^(\s*(?:async\s+)?)function(\*?\s+.+)", re.MULTILINE)
-
 
 def compile(input):
     without_comments = re.sub(COMMENTS, "", input)
@@ -24,3 +24,20 @@ def compile(input):
         added_colons,
     )
     return functions_converted
+
+class UnvConsole(InteractiveConsole):
+    def push(self, line):
+        self.buffer.append(line)
+        source = "\n".join(self.buffer)
+        more = self.runsource(compile(source), self.filename)
+        if not more:
+            self.resetbuffer()
+        return more
+
+def __main__():
+    console = UnvConsole({})
+    try:
+        import readline
+    except ImportError:
+        pass
+    console.interact("Interactive Unv Console.")
