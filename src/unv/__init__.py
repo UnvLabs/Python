@@ -18,9 +18,9 @@ def compile(input):
     added_colons = re.sub(
         STATEMENT, lambda match: match.group() + ":", strings_converted
     )
-    function_converted = re.sub(
+    functions_converted = re.sub(
         FUNCTION,
         lambda match: match.group(1) + "def" + match.group(2) + ":",
-        strings_converted,
+        added_colons,
     )
-    return function_converted
+    return functions_converted
