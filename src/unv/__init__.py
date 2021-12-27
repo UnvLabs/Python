@@ -1,20 +1,25 @@
+import re
+
+def replacer(match):
+    if match.group(1):
+        return re.sub(r"\n", "\\n", group())
+    else:
+        return ""
+
+REPLACERE = r"""("(?:\\["\\]|[^"\\])*"|'(?:\\['\\]|[^'\\])*')|###[\s\S]*?###|#.*"""
+
+STAT = r"^(\s*)(if|else|switch|try|catch|(?:async\s+)?function\*?|class|do|while|for)\s+(.+)"
 def compile(input):
-  input = input.replace(
-    /("(?:\\["\\]|[^"\\])*"|'(?:\\['\\]|[^'\\])*')|###[^]*?###|#.*/gm,
-    (_, string) => (string ? string.replace(/\n/g, "\\n") : "")
-  )
-  lines = input.split("\n")
-  comment = false
-  indents = []
-  output = ""
-  for line in lines:
-    statement = line.match(
-      /^(\s*)(if|else|switch|try|catch|(?:async\s+)?function\*?|class|do|while|for)\s+(.+)/
-    )
-    if statement:
-      let [, spaces, name, args] = statement
-      indents.unshift(spaces.length)
-      output += `${spaces}${name} ${
+    input = re.sub(REPLACERE, replacer, input)
+    lines = input.splitlines()
+    comment = false
+    indents = []
+    output = ""
+    for line in lines:
+        statement = re.search(STAT, line)
+        if statement:
+            indents.push(spaces.length)
+            output += `${spaces}${name} ${
         /function|try|class/.test(name) ? args : `(${args})`
       } {\n`
     else:
