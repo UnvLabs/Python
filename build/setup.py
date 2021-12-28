@@ -9,7 +9,7 @@ if sys.platform == "win32":
 setup(
     name = "unv",
     version = "0.0.1",
-    description = "Unv comman line tool",
+    description = "Unv command line tool",
     options = {"build_exe": build_exe_options},
     executables = [Executable("unv.py", base=None)]
 )
