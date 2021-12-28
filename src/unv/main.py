@@ -1,6 +1,7 @@
 from code import InteractiveConsole
 from argparse import ArgumentParser
 from .compile import compile
+import encodings
 
 try:
     import readline
