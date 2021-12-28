@@ -50,6 +50,9 @@ setup(
     package_dir={"": "src"},  # Optional
     packages=find_packages(where="src"),  # Required
     python_requires=">=3.6, <4",
+    install_requires=[
+        'Click',
+    ],
     entry_points={  # Optional
         "console_scripts": [
             "unv=unv:main",
