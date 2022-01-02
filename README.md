@@ -1,2 +1,2 @@
 # Python
-Let's remove the colon of python.
+Unv to python compiler and interactive interpreter.
