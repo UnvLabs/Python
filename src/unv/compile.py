@@ -15,6 +15,7 @@ from io import BytesIO
 
 COMMENTS = r"###[\s\S]*?###|#.*"
 STRINGS = r""""(?:\\["\\]|[^"\\])*"|'(?:\\['\\]|[^'\\])*'"""
+IMPORT = r"""import([\s\S]+?)from\s*("(?:\\["\\]|[^"\\])*"|'(?:\\['\\]|[^'\\])*')"""
 
 
 class UnvUntokenizer(Untokenizer):
@@ -57,7 +58,7 @@ class UnvUntokenizer(Untokenizer):
                 and not parens
                 and not braces
             ):
-                token += ":"
+                token = ":" + token
                 add_colon = False
 
             if tok_type == ENCODING:
@@ -100,6 +101,4 @@ def compile(input):
 
     ut = UnvUntokenizer()
     out = ut.untokenize(list(tokens))
-    if ut.encoding is not None:
-        out = out.encode(ut.encoding)
     return out
