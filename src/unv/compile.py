@@ -97,7 +97,12 @@ def compile(input):
         lambda match: match.group().replace("\n", "\\n"),
         without_comments,
     )
-    tokens = tokenize(BytesIO(strings_converted.encode("utf-8")).readline)
+    imports_resolved = re.sub(
+        IMPORT,
+        lambda match: "from " + group(2)[1:-1].replace("../", "..").replace("./", ".").replace("/", ".") + " import " + group(1),
+        strings_converted,
+    )
+    tokens = tokenize(BytesIO(imports_resolved.encode("utf-8")).readline)
 
     ut = UnvUntokenizer()
     out = ut.untokenize(list(tokens))
