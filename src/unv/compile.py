@@ -15,7 +15,7 @@ from io import BytesIO
 
 COMMENTS = r"###[\s\S]*?###|#.*"
 STRINGS = r""""(?:\\["\\]|[^"\\])*"|'(?:\\['\\]|[^'\\])*'"""
-IMPORT = r"""import([\s\S]+?)from\s*("(?:\\["\\]|[^"\\])*"|'(?:\\['\\]|[^'\\])*')"""
+IMPORT = r"""import\s+([\s\S]+?)\s+from\s+("(?:\\["\\]|[^"\\])*"|'(?:\\['\\]|[^'\\])*')"""
 
 
 class UnvUntokenizer(Untokenizer):
