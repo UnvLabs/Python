@@ -94,7 +94,7 @@ def compile(input):
     without_comments = re.sub(COMMENTS, "", input)
     strings_converted = re.sub(
         STRINGS,
-        lambda match: match.group().replace("\n", "\\n"),
+        lambda match: match.group()[0] * 2 + match.group() + match.group()[0] * 2,
         without_comments,
     )
     imports_resolved = re.sub(

@@ -1,5 +1,6 @@
 from code import InteractiveConsole
 from argparse import ArgumentParser
+from tokenize import TokenError
 from .compile import compile
 import encodings
 
@@ -16,18 +17,32 @@ INTRO = """
 
 
 class UnvConsole(InteractiveConsole):
-    def push(self, line):
-        self.buffer.append(line)
-        source = "\n".join(self.buffer)
-        more = self.runsource(compile(source), self.filename)
-        if not more:
-            self.resetbuffer()
-        return more
+    def runsource(self, source, filename="<input>", symbol="single"):
+        try:
+            pycode = compile(source)
+        except TokenError:
+            return True
+
+        if pycode is None:
+            return True
+
+        try:
+            code = self.compile(pycode, filename, symbol)
+        except (OverflowError, SyntaxError, ValueError):
+            self.showsyntaxerror(filename)
+            return False
+
+        if code is None:
+            return True
+
+        # Case 3
+        self.runcode(code)
+        return False
 
 
 def main():
     parser = ArgumentParser(description=INTRO)
-    parser.add_argument("file", help="An Unv source file to run")
+    parser.add_argument("file", help="An Unv source file to run", nargs='?')
     args = parser.parse_args()
 
     if args.file:
