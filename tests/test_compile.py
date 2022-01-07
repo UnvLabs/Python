@@ -1,7 +1,7 @@
 from unv import compile
 
 
-def test_inline_comment():
+def test_compile():
     assert (
         compile(
             """
