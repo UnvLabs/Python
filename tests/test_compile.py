@@ -1,11 +1,18 @@
 from unv import compile
 
+
 def test_inline_comment():
     assert (
         compile(
             """
-# This is an inline comment
+import print from 'standard'
+
+print("Hello, World!")
 """
         )
-        == "\n\n"
+        == """
+from standard import print
+
+print("Hello, World!")
+"""
     )
