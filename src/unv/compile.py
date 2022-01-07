@@ -99,7 +99,10 @@ def compile(input):
     )
     imports_resolved = re.sub(
         IMPORT,
-        lambda match: "from " + group(2)[1:-1].replace("../", "..").replace("./", ".").replace("/", ".") + " import " + group(1),
+        lambda match: "from "
+        + match.group(2)[1:-1].replace("../", "..").replace("./", ".").replace("/", ".")
+        + " import "
+        + match.group(1),
         strings_converted,
     )
     tokens = tokenize(BytesIO(imports_resolved.encode("utf-8")).readline)
